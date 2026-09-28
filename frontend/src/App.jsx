@@ -13,13 +13,12 @@ import ExportReportModal from './components/Modals/ExportReportModal';
 import { SCENARIOS } from './data/scenarios';
 import { ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
 
-const Sim3DView = React.lazy(() => import('./features/sim3d/components/Sim3DView'));
 const DigitalTwinView = React.lazy(() => import('./features/digitalTwin'));
 
 export default function App() {
   const [scenariosList, setScenariosList] = useState(SCENARIOS);
   const [selectedScenario, setSelectedScenario] = useState(SCENARIOS[0]);
-  const [activeRole, setActiveRole] = useState('technical'); // 'technical' | 'field' | 'local' | 'public' | 'sim3d'
+  const [activeRole, setActiveRole] = useState('technical'); // 'technical' | 'field' | 'local' | 'public' | 'digital_twin'
   const [currentHour, setCurrentHour] = useState(1);
   const [selectedVillage, setSelectedVillage] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
@@ -125,28 +124,17 @@ export default function App() {
         onOpenExportModal={() => setIsExportOpen(true)}
       />
 
-      {/* 3D Simulation / Digital Twin Simulation View or Main 2D/3D Map Workspace */}
+      {/* Digital Twin Simulation View or Main 2D/3D Map Workspace */}
       {activeRole === 'digital_twin' ? (
         <React.Suspense fallback={
-          <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#060913', color: '#f1f5f9' }}>
+          <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f8fafc', color: '#0f172a' }}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
-              <div style={{ width: '32px', height: '32px', border: '3px solid rgba(56, 189, 248, 0.2)', borderTopColor: '#06b6d4', borderRadius: '50%', animation: 'sim3d-spin 0.8s linear infinite' }} />
-              <span style={{ fontSize: '13px', fontWeight: '600', color: '#38bdf8' }}>Loading Digital Twin Simulation Engine...</span>
+              <div style={{ width: '32px', height: '32px', border: '3px solid #e2e8f0', borderTopColor: '#0284c7', borderRadius: '50%', animation: 'dt-spin 0.8s linear infinite' }} />
+              <span style={{ fontSize: '13px', fontWeight: '600', color: '#0284c7' }}>Loading Digital Twin Simulation Engine...</span>
             </div>
           </div>
         }>
           <DigitalTwinView />
-        </React.Suspense>
-      ) : activeRole === 'sim3d' ? (
-        <React.Suspense fallback={
-          <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f8fafc', color: '#0f172a' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
-              <div style={{ width: '32px', height: '32px', border: '3px solid #e2e8f0', borderTopColor: '#0284c7', borderRadius: '50%', animation: 'sim3d-spin 0.8s linear infinite' }} />
-              <span style={{ fontSize: '13px', fontWeight: '600', color: '#475569' }}>Loading 3D Scientific Simulation Engine...</span>
-            </div>
-          </div>
-        }>
-          <Sim3DView />
         </React.Suspense>
       ) : (
         /* Main Workspace (Map + Role View Drawer) */

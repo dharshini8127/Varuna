@@ -32,17 +32,17 @@ export default function ImpactMapView({
       // Clear
       ctx.clearRect(0, 0, w, h);
 
-      // 1. Draw Satellite Terrain Base Background
+      // 1. Draw Light Satellite Terrain Base Background
       const bgGrad = ctx.createLinearGradient(0, 0, w, h);
-      bgGrad.addColorStop(0, '#0a1410');
-      bgGrad.addColorStop(0.3, '#102219');
-      bgGrad.addColorStop(0.7, '#142013');
-      bgGrad.addColorStop(1, '#0c160e');
+      bgGrad.addColorStop(0, '#f8fafc');
+      bgGrad.addColorStop(0.3, '#edf3f0');
+      bgGrad.addColorStop(0.7, '#e8f0ec');
+      bgGrad.addColorStop(1, '#e2e8f0');
       ctx.fillStyle = bgGrad;
       ctx.fillRect(0, 0, w, h);
 
       // Topo contour lines (satellite contour effect)
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+      ctx.strokeStyle = 'rgba(15, 23, 42, 0.06)';
       ctx.lineWidth = 1;
       for (let r = 50; r < Math.max(w, h); r += 60) {
         ctx.beginPath();
@@ -136,7 +136,7 @@ export default function ImpactMapView({
           ctx.closePath();
           ctx.fillStyle = layer.color;
           ctx.shadowColor = layer.color;
-          ctx.shadowBlur = 15;
+          ctx.shadowBlur = 12;
           ctx.fill();
         });
 
@@ -151,14 +151,14 @@ export default function ImpactMapView({
           0,
           Math.PI * 2
         );
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
-        ctx.shadowColor = '#ffffff';
-        ctx.shadowBlur = 12;
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+        ctx.shadowColor = 'rgba(2, 132, 199, 0.3)';
+        ctx.shadowBlur = 8;
         ctx.fill();
         ctx.shadowBlur = 0;
       }
 
-      // 4. Glowing Evacuation Routes (Dashed Lines with marching pulse)
+      // 4. Evacuation Routes (Dashed Lines with marching pulse)
       const dashOffset = (tick * 0.6) % 24;
       settlements.forEach((s, idx) => {
         const shelter = safeShelters[idx % safeShelters.length];
@@ -178,18 +178,18 @@ export default function ImpactMapView({
         const midY = (vY + sY) / 2;
         ctx.quadraticCurveTo(midX, midY, sX, sY);
 
-        // Neon Glow route line
-        ctx.strokeStyle = '#10b981';
+        // Clean Evacuation route line
+        ctx.strokeStyle = '#059669';
         ctx.lineWidth = 3.5;
         ctx.setLineDash([10, 6]);
         ctx.lineDashOffset = -dashOffset;
-        ctx.shadowColor = '#10b981';
-        ctx.shadowBlur = 14;
+        ctx.shadowColor = 'rgba(5, 150, 105, 0.35)';
+        ctx.shadowBlur = 8;
         ctx.stroke();
         ctx.restore();
       });
 
-      // 5. Green Evacuation Safe Zones (Pulsing Concentric Circles)
+      // 5. Evacuation Safe Zones (Pulsing Concentric Circles)
       safeShelters.forEach((shelter) => {
         const sX = w * (0.5 + shelter.x / 140);
         const sY = h * (0.16 + (shelter.z + 110) / 280);
@@ -199,18 +199,18 @@ export default function ImpactMapView({
         // Outer pulsing ring
         ctx.beginPath();
         ctx.arc(sX, sY, pulse + 12, 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(16, 185, 129, 0.4)';
+        ctx.strokeStyle = 'rgba(5, 150, 105, 0.35)';
         ctx.lineWidth = 2;
         ctx.stroke();
 
         // Inner solid safe buffer
         ctx.beginPath();
         ctx.arc(sX, sY, 14, 0, Math.PI * 2);
-        ctx.fillStyle = '#065f46';
-        ctx.shadowColor = '#10b981';
-        ctx.shadowBlur = 16;
+        ctx.fillStyle = '#10b981';
+        ctx.shadowColor = 'rgba(16, 185, 129, 0.4)';
+        ctx.shadowBlur = 10;
         ctx.fill();
-        ctx.strokeStyle = '#34d399';
+        ctx.strokeStyle = '#059669';
         ctx.lineWidth = 2.5;
         ctx.stroke();
         ctx.shadowBlur = 0;
@@ -249,25 +249,25 @@ export default function ImpactMapView({
         position: 'absolute',
         top: '76px',
         left: '380px',
-        background: 'rgba(10, 16, 30, 0.88)',
+        background: 'rgba(255, 255, 255, 0.92)',
         backdropFilter: 'blur(16px)',
-        border: '1px solid rgba(56, 189, 248, 0.25)',
+        border: '1px solid rgba(15, 23, 42, 0.1)',
         borderRadius: '12px',
         padding: '10px 16px',
         zIndex: 15,
         display: 'flex',
         alignItems: 'center',
         gap: '16px',
-        boxShadow: '0 8px 24px rgba(0,0,0,0.5)'
+        boxShadow: '0 8px 24px rgba(15, 23, 42, 0.08)'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 8px #10b981' }} />
-          <span style={{ fontSize: '12px', fontWeight: 700, color: '#38bdf8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 6px #10b981' }} />
+          <span style={{ fontSize: '12px', fontWeight: 700, color: '#0284c7', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             Satellite Impact Mode
           </span>
         </div>
-        <div style={{ height: '16px', width: '1px', background: 'rgba(255,255,255,0.15)' }} />
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '11px', color: '#94a3b8' }}>
+        <div style={{ height: '16px', width: '1px', background: 'rgba(15, 23, 42, 0.1)' }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '11px', color: '#64748b' }}>
           <span>Depth Heatmap:</span>
           <div style={{
             width: '120px',
@@ -275,7 +275,7 @@ export default function ImpactMapView({
             borderRadius: '4px',
             background: 'linear-gradient(to right, #0284c7, #06b6d4, #84cc16, #f59e0b, #ef4444)'
           }} />
-          <span style={{ fontSize: '10px', fontFamily: 'monospace', color: '#e2e8f0' }}>0m → 10m+</span>
+          <span style={{ fontSize: '10px', fontFamily: 'monospace', color: '#0f172a' }}>0m → 10m+</span>
         </div>
       </div>
 
@@ -296,34 +296,34 @@ export default function ImpactMapView({
               position: 'absolute',
               top: topOffsets[idx % topOffsets.length],
               left: leftOffsets[idx % leftOffsets.length],
-              background: 'rgba(10, 18, 32, 0.92)',
+              background: 'rgba(255, 255, 255, 0.94)',
               backdropFilter: 'blur(16px)',
-              border: `1px solid ${isReached ? '#ef4444' : '#38bdf8'}`,
+              border: `1.5px solid ${isReached ? '#ef4444' : '#0284c7'}`,
               borderRadius: '10px',
               padding: '8px 12px',
               zIndex: 12,
-              boxShadow: `0 8px 24px rgba(0,0,0,0.6), 0 0 16px ${isReached ? 'rgba(239,68,68,0.3)' : 'rgba(56,189,248,0.2)'}`,
+              boxShadow: `0 8px 24px rgba(15, 23, 42, 0.1), 0 0 12px ${isReached ? 'rgba(239,68,68,0.15)' : 'rgba(2,132,199,0.15)'}`,
               minWidth: '180px'
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
-              <span style={{ fontSize: '12px', fontWeight: 800, color: '#f8fafc' }}>{s.name}</span>
+              <span style={{ fontSize: '12px', fontWeight: 800, color: '#0f172a' }}>{s.name}</span>
               <span style={{
                 fontSize: '9px',
                 fontWeight: 700,
                 padding: '2px 5px',
                 borderRadius: '4px',
-                background: isReached ? 'rgba(239,68,68,0.25)' : 'rgba(16,185,129,0.25)',
-                color: isReached ? '#f87171' : '#34d399',
+                background: isReached ? 'rgba(239,68,68,0.12)' : 'rgba(16,185,129,0.12)',
+                color: isReached ? '#dc2626' : '#059669',
                 border: `1px solid ${isReached ? '#ef4444' : '#10b981'}`
               }}>
                 {isReached ? 'INUNDATED' : 'SAFE'}
               </span>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#94a3b8', margin: '4px 0' }}>
-              <span>Depth: <strong style={{ color: isReached ? '#ef4444' : '#38bdf8' }}>{currentDepth.toFixed(1)}m</strong></span>
-              <span>Pop: <strong style={{ color: '#f1f5f9' }}>{s.pop.toLocaleString()}</strong></span>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#64748b', margin: '4px 0' }}>
+              <span>Depth: <strong style={{ color: isReached ? '#dc2626' : '#0284c7' }}>{currentDepth.toFixed(1)}m</strong></span>
+              <span>Pop: <strong style={{ color: '#0f172a' }}>{s.pop.toLocaleString()}</strong></span>
             </div>
 
             <div style={{
@@ -331,14 +331,14 @@ export default function ImpactMapView({
               alignItems: 'center',
               gap: '6px',
               fontSize: '10px',
-              color: '#34d399',
-              background: 'rgba(16,185,129,0.12)',
+              color: '#059669',
+              background: 'rgba(16,185,129,0.08)',
               padding: '4px 6px',
               borderRadius: '6px',
-              border: '1px solid rgba(16,185,129,0.3)',
+              border: '1px solid rgba(16,185,129,0.25)',
               marginTop: '4px'
             }}>
-              <Navigation size={10} color="#34d399" />
+              <Navigation size={10} color="#059669" />
               <span>Route → {shelter ? shelter.name : 'Ridge Shelter'}</span>
             </div>
           </div>
@@ -357,22 +357,22 @@ export default function ImpactMapView({
               position: 'absolute',
               top: topOffsets[idx % topOffsets.length],
               left: leftOffsets[idx % leftOffsets.length],
-              background: 'rgba(6, 95, 70, 0.92)',
+              background: 'rgba(255, 255, 255, 0.94)',
               backdropFilter: 'blur(16px)',
-              border: '1px solid #10b981',
+              border: '1.5px solid #10b981',
               borderRadius: '10px',
               padding: '8px 12px',
               zIndex: 12,
-              boxShadow: '0 8px 24px rgba(0,0,0,0.6), 0 0 16px rgba(16,185,129,0.3)',
+              boxShadow: '0 8px 24px rgba(15, 23, 42, 0.08), 0 0 12px rgba(16,185,129,0.15)',
               display: 'flex',
               alignItems: 'center',
               gap: '8px'
             }}
           >
-            <Shield size={18} color="#34d399" />
+            <Shield size={18} color="#059669" />
             <div>
-              <div style={{ fontSize: '11px', fontWeight: 800, color: '#f0fdf4' }}>{sh.name}</div>
-              <div style={{ fontSize: '9px', color: '#a7f3d0' }}>
+              <div style={{ fontSize: '11px', fontWeight: 800, color: '#0f172a' }}>{sh.name}</div>
+              <div style={{ fontSize: '9px', color: '#059669', fontWeight: 600 }}>
                 Cap: {sh.capacity.toLocaleString()} | Elev: +{sh.elevM}m
               </div>
             </div>

@@ -59,8 +59,8 @@ export default function DioramaCanvas({
 
     // 1. Scene
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color('#070b16');
-    scene.fog = new THREE.FogExp2('#070b16', 0.0022);
+    scene.background = new THREE.Color('#e2e8f0');
+    scene.fog = new THREE.FogExp2('#e2e8f0', 0.0018);
     sceneRef.current = scene;
 
     // 2. Camera
@@ -82,10 +82,10 @@ export default function DioramaCanvas({
     rendererRef.current = renderer;
 
     // 4. Lights
-    const ambientLight = new THREE.AmbientLight('#a5b4fc', 0.45);
+    const ambientLight = new THREE.AmbientLight('#ffffff', 0.85);
     scene.add(ambientLight);
 
-    const sunLight = new THREE.DirectionalLight('#fffbeb', 1.4);
+    const sunLight = new THREE.DirectionalLight('#ffffff', 1.3);
     sunLight.position.set(140, 180, -90);
     sunLight.castShadow = true;
     sunLight.shadow.mapSize.width = 1024;
@@ -99,7 +99,7 @@ export default function DioramaCanvas({
     sunLight.shadow.bias = -0.0005;
     scene.add(sunLight);
 
-    const blueFill = new THREE.DirectionalLight('#38bdf8', 0.5);
+    const blueFill = new THREE.DirectionalLight('#bae6fd', 0.45);
     blueFill.position.set(-120, 60, 100);
     scene.add(blueFill);
 
@@ -451,28 +451,28 @@ export default function DioramaCanvas({
             }}
           >
             <div style={{
-              background: isFlooded ? 'rgba(239, 68, 68, 0.85)' : 'rgba(15, 23, 42, 0.85)',
+              background: isFlooded ? 'rgba(239, 68, 68, 0.95)' : 'rgba(255, 255, 255, 0.95)',
               backdropFilter: 'blur(8px)',
-              border: `1px solid ${isFlooded ? '#ef4444' : '#38bdf8'}`,
+              border: `1.5px solid ${isFlooded ? '#dc2626' : '#0284c7'}`,
               borderRadius: '6px',
               padding: '3px 8px',
-              color: '#ffffff',
+              color: isFlooded ? '#ffffff' : '#0f172a',
               fontSize: '11px',
               fontWeight: 700,
-              boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
+              boxShadow: '0 4px 12px rgba(15, 23, 42, 0.12)',
               display: 'flex',
               alignItems: 'center',
               gap: '5px',
               whiteSpace: 'nowrap'
             }}>
-              {isFlooded ? <AlertTriangle size={12} color="#fef08a" /> : <Eye size={12} color="#38bdf8" />}
+              {isFlooded ? <AlertTriangle size={12} color="#ffffff" /> : <Eye size={12} color="#0284c7" />}
               <span>{lbl.name}</span>
-              <span style={{ fontSize: '9px', opacity: 0.8, color: '#bae6fd' }}>({lbl.pop.toLocaleString()} pop)</span>
+              <span style={{ fontSize: '9px', opacity: 0.85, color: isFlooded ? '#fee2e2' : '#475569' }}>({lbl.pop.toLocaleString()} pop)</span>
             </div>
             <div style={{
               width: '2px',
               height: '8px',
-              background: isFlooded ? '#ef4444' : '#38bdf8'
+              background: isFlooded ? '#dc2626' : '#0284c7'
             }} />
           </div>
         );
@@ -817,8 +817,8 @@ export default function DioramaCanvas({
   function buildDioramaPlinth() {
     const group = new THREE.Group();
     const plinthMat = new THREE.MeshStandardMaterial({
-      color: '#0f172a',
-      roughness: 0.9,
+      color: '#cbd5e1',
+      roughness: 0.8,
       metalness: 0.1
     });
 

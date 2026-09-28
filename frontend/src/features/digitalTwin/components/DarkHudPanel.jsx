@@ -59,7 +59,7 @@ export default function DarkHudPanel({
           <div>
             <div className="dt-brand-title">
               Digital Twin Simulation
-              <span style={{ fontSize: '9px', padding: '2px 5px', borderRadius: '4px', background: 'rgba(56,189,248,0.2)', border: '1px solid rgba(56,189,248,0.4)', color: '#38bdf8' }}>
+              <span style={{ fontSize: '9px', padding: '2px 5px', borderRadius: '4px', background: 'rgba(2, 132, 199, 0.1)', border: '1px solid rgba(2, 132, 199, 0.3)', color: '#0284c7', fontWeight: 700 }}>
                 HPC 3D ENGINE
               </span>
             </div>
@@ -97,7 +97,7 @@ export default function DarkHudPanel({
         {/* Right Status Indicator */}
         <div className="dt-status-pill">
           <div className={`dt-status-dot ${isBreached ? 'active' : ''}`} />
-          <span style={{ fontWeight: 600, color: isBreached ? '#fca5a5' : '#86efac' }}>
+          <span style={{ fontWeight: 700, color: isBreached ? '#dc2626' : '#059669' }}>
             {isBreached ? 'HYDRAULIC BREACH ACTIVE' : 'STEADY POOL STORAGE'}
           </span>
         </div>
@@ -120,7 +120,7 @@ export default function DarkHudPanel({
           <div className="dt-card">
             <div className="dt-card-header">
               <span className="dt-card-title">
-                <Compass size={13} color="#38bdf8" />
+                <Compass size={13} color="#0284c7" />
                 Scenario Selection
               </span>
               <span style={{ fontSize: '10px', color: '#64748b', fontFamily: 'monospace' }}>
@@ -137,15 +137,15 @@ export default function DarkHudPanel({
               }}
             >
               {DT_SCENARIOS.map((s) => (
-                <option key={s.id} value={s.id} style={{ background: '#090e1a', color: '#f8fafc' }}>
+                <option key={s.id} value={s.id} style={{ background: '#ffffff', color: '#0f172a' }}>
                   {s.name}
                 </option>
               ))}
             </select>
 
             <div className="dt-scenario-desc">
-              <div style={{ fontWeight: 700, color: '#e2e8f0', marginBottom: '2px' }}>{selectedScenario.river}</div>
-              <div>{selectedScenario.type} • {selectedScenario.location}</div>
+              <div style={{ fontWeight: 700, color: '#0f172a', marginBottom: '2px' }}>{selectedScenario.river}</div>
+              <div style={{ color: '#475569' }}>{selectedScenario.type} • {selectedScenario.location}</div>
             </div>
           </div>
 
@@ -153,10 +153,10 @@ export default function DarkHudPanel({
           <div className="dt-card">
             <div className="dt-card-header">
               <span className="dt-card-title">
-                <Sliders size={13} color="#38bdf8" />
+                <Sliders size={13} color="#0284c7" />
                 Breach Hydraulic Parameters
               </span>
-              <span style={{ fontSize: '10px', color: '#38bdf8', fontWeight: 700 }}>
+              <span style={{ fontSize: '10px', color: '#0284c7', fontWeight: 700 }}>
                 FROEHLICH (2008)
               </span>
             </div>
@@ -241,10 +241,10 @@ export default function DarkHudPanel({
           <div className="dt-card">
             <div className="dt-card-header">
               <span className="dt-card-title">
-                <Activity size={13} color="#38bdf8" />
+                <Activity size={13} color="#0284c7" />
                 Live Breach Discharge
               </span>
-              <span style={{ fontSize: '10px', color: '#10b981', fontWeight: 700 }}>
+              <span style={{ fontSize: '10px', color: isBreached ? '#dc2626' : '#059669', fontWeight: 700 }}>
                 {isBreached ? 'SURGING' : 'BASEFLOW'}
               </span>
             </div>
@@ -255,7 +255,7 @@ export default function DarkHudPanel({
                 <path
                   d="M 15 70 A 40 40 0 1 1 85 70"
                   fill="none"
-                  stroke="rgba(255, 255, 255, 0.1)"
+                  stroke="#e2e8f0"
                   strokeWidth="8"
                   strokeLinecap="round"
                 />
@@ -263,7 +263,7 @@ export default function DarkHudPanel({
                 <path
                   d="M 15 70 A 40 40 0 1 1 85 70"
                   fill="none"
-                  stroke={liveDischarge > 15000 ? '#ef4444' : '#06b6d4'}
+                  stroke={liveDischarge > 15000 ? '#ef4444' : '#0284c7'}
                   strokeWidth="8"
                   strokeLinecap="round"
                   strokeDasharray="251.2"
@@ -273,7 +273,7 @@ export default function DarkHudPanel({
               </svg>
 
               <div className="dt-gauge-center" style={{ bottom: '15px' }}>
-                <span style={{ fontSize: '18px', fontWeight: 900, fontFamily: 'monospace', color: '#ffffff' }}>
+                <span style={{ fontSize: '18px', fontWeight: 900, fontFamily: 'monospace', color: '#0f172a' }}>
                   {liveDischarge.toLocaleString()}
                 </span>
                 <span style={{ fontSize: '10px', color: '#64748b', fontWeight: 600 }}>m³ / sec</span>
@@ -320,14 +320,14 @@ export default function DarkHudPanel({
           <div className="dt-card">
             <div className="dt-card-header">
               <span className="dt-card-title">
-                <Info size={13} color="#38bdf8" />
+                <Info size={13} color="#0284c7" />
                 Cartographic Legend
               </span>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', color: '#94a3b8', marginBottom: '4px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', color: '#64748b', marginBottom: '4px' }}>
                   <span>Water Depth (m)</span>
                   <span>0m → 10m+</span>
                 </div>
@@ -357,8 +357,8 @@ export default function DarkHudPanel({
               </div>
 
               <div className="dt-legend-row">
-                <div style={{ width: '12px', height: '2px', background: '#10b981', borderTop: '2px dashed #34d399' }} />
-                <span>Glowing Evacuation Route Polylines</span>
+                <div style={{ width: '12px', height: '2px', background: '#059669', borderTop: '2px dashed #10b981' }} />
+                <span>Evacuation Route Polylines</span>
               </div>
             </div>
           </div>

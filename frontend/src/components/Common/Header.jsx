@@ -10,7 +10,6 @@ import {
   Radio, 
   Droplet,
   ChevronDown,
-  Box,
   Activity
 } from 'lucide-react';
 
@@ -28,7 +27,6 @@ export default function Header({
     { id: 'field', label: 'Field Operations', icon: Shield, badge: 'NDRF / SDRF' },
     { id: 'local', label: 'Local Admin (SDMA)', icon: Building2, badge: 'District HQ' },
     { id: 'public', label: 'Public / Citizen', icon: Users, badge: 'Safety & SOS' },
-    { id: 'sim3d', label: '3D Simulation', icon: Box, badge: 'Three.js / Digital Twin' },
     { id: 'digital_twin', label: 'Digital Twin Simulation', icon: Activity, badge: 'Diorama & Risk Map' }
   ];
 
