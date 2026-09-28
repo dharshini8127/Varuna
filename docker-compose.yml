@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  # API Gateway & Backend
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: varuna-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://varuna:varunapass@postgis:5432/varuna_db
+      - REDIS_URL=redis://redis:6379/0
+      - MINIO_ENDPOINT=minio:9000
+      - MINIO_ACCESS_KEY=minioadmin
+      - MINIO_SECRET_KEY=minioadmin
+    depends_on:
+      - postgis
+      - redis
+      - minio
+    volumes:
+      - ./backend:/app/backend
+
+  # Frontend Application (React + MapLibre GL)
+  frontend:
+    image: node:20-alpine
+    container_name: varuna-frontend
+    working_dir: /app
+    ports:
+      - "5174:5174"
+    volumes:
+      - ./frontend:/app
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0 --port 5174"
+
+  # Geospatial & Time-Series Database (PostGIS + TimescaleDB)
+  postgis:
+    image: postgis/postgis:16-3.4
+    container_name: varuna-postgis
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=varuna
+      - POSTGRES_PASSWORD=varunapass
+      - POSTGRES_DB=varuna_db
+    volumes:
+      - postgis_data:/var/lib/postgresql/data
+
+  # Message Broker & Task Queue (Celery broker)
+  redis:
+    image: redis:7-alpine
+    container_name: varuna-redis
+    ports:
+      - "6379:6379"
+
+  # S3-compatible Object Storage for GeoTIFFs, DEMs & Simulation Rasters
+  minio:
+    image: minio/minio:latest
+    container_name: varuna-minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+
+  # Delft3D-FM CPU Simulation Worker Stub
+  delft3d-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: varuna-delft3d-worker
+    command: celery -A backend.app.services.simulation worker -Q delft3d -l info --concurrency=4
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - MINIO_ENDPOINT=minio:9000
+    depends_on:
+      - redis
+      - minio
+
+volumes:
+  postgis_data:
+  minio_data:
